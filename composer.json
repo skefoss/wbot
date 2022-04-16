@@ -1,0 +1,40 @@
+{
+    "name": "wbot/wbot",
+    "description": "Fetch/Serve files over the web from a local server",
+    "homepage": "https://packagist.org/packages/ske/wbot",
+    "license": "Apache-2.0",
+    "keywords": [
+        "http-server",
+        "http-client",
+		"fetch",
+		"serve",
+        "www-robot",
+		"wget"
+    ],
+    "scripts": {
+        "fetch": "./wbot fetch",
+        "serve": "./wbot serve"
+    },
+    "authors": [{
+        "name": "SIGUI Kessé Emmanuel",
+        "homepage": "https://dev.sikessem.com",
+        "email": "contact@sikessem.com",
+        "role": "Developer"
+    }],
+    "support": {
+        "source": "https://github.com/skefoss/wbot",
+        "issues": "https://github.com/skefoss/wbot/issues"
+    },
+    "require": {
+        "php": ">=8.0"
+    },
+    "config": {
+        "web-dir": "out",
+        "vendor-dir": "vendor",
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "bin": "./wbot",
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

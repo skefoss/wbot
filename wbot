@@ -1,0 +1,71 @@
+#!/usr/bin/env php
+<?php
+
+if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
+	fprintf(STDERR, 'Cannot run %s from %s', __FILE__, PHP_SAPI);
+	exit(1);
+}
+
+if (__FILE__ !== $file = realpath($command = array_shift($argv))) {
+	fprintf(STDERR, 'Cannot run %s from %s', __FILE__, $file);
+	exit(1);
+}
+--$argc;
+
+$usage = <<<USAGE
+Usage  : $command <command> [<argument>...]
+Command:
+  fetch : Fetch files
+  serve : Serve files
+
+USAGE;
+
+if (!$argc) {
+	echo $usage;
+	exit;
+}
+
+switch (array_shift($argv)) {
+	case 'fetch':
+		foreach ($argv as $path) {
+			fetch("https://$path", __DIR__ . DIRECTORY_SEPARATOR . 'out');
+		}
+		break;
+
+	case 'serve':
+		serve($argv[0] ?? 'localhost', $argv[1] ?? 80);
+		break;
+	
+	default:
+		fwrite(STDERR, $usage);
+		exit(1);
+}
+
+function serve(string $host, int $port): void {
+	exec(PHP_BINARY . " -S $host:$port -t " . __DIR__ . DIRECTORY_SEPARATOR . 'out');
+}
+
+function fetch(string $source, string $target): bool {
+	echo "Getting $source" . PHP_EOL; 
+	if ($contents = @file_get_contents($source, false, stream_context_create(['https' => ['method'=>"GET", 'header'=>"Accept-language: en" . PHP_EOL . "Cookie: ske=sikessem"]])))
+		echo "$source getted" . PHP_EOL;
+	
+	$url = parse_url($source);
+	
+	$path = $url['path'] ?? '';
+	$path = trim($path, '/');
+	if (empty($path))
+		$path = 'index.html';
+	if (!pathinfo($path, PATHINFO_EXTENSION))
+		$path .= '.html';
+	
+	$target .= (!empty($url['host']) ? DIRECTORY_SEPARATOR . $url['host'] : '') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path);
+	
+	if (!is_dir($dir = dirname($target)))
+		@mkdir($dir, 0777, true);
+
+	echo "Putting $target" . PHP_EOL; 
+	if (file_put_contents($target, $contents, LOCK_EX))
+		echo "$target putted" . PHP_EOL;
+	return true;
+}
