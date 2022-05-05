@@ -29,6 +29,12 @@
         "php": ">=8.0",
         "symfony/console": "^6.0"
     },
+  	"autoload": {
+	  	"psr-4": {
+		  	"Wbot\\Application\\": "src/app/",
+		  	"Wbot\\Command\\": "src/cmd/"
+		}
+	},
     "config": {
         "web-dir": "out",
         "vendor-dir": "vendor",
