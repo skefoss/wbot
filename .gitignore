@@ -1,3 +1,5 @@
 /out/
 /vendor/
 /composer.lock
+/.vscode/
+/.idea/
