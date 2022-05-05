@@ -1,0 +1,4 @@
+* text=auto
+
+*.php diff=php
+./wbot text diff=php eol=lf
