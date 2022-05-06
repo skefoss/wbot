@@ -1,23 +1,25 @@
 <?php
-namespace Wbot\Command;
+namespace Ske\Bot\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
-class WbotFetchCommand extends Command {
+class FetchCommand extends Command {
 	protected function configure() {
-		$this->setName('fetch')
+		$this
+			->setName('fetch')
 			->setDescription('Fetch files')
-			->addOption('out', 'o', InputArgument::OPTIONAL, 'Output directory', getcwd() . DIRECTORY_SEPARATOR . 'out')
 			->addArgument('path', InputArgument::REQUIRED|InputArgument::IS_ARRAY, 'Path to fetch')
+			->addOption('--tmp', null, InputOption::VALUE_NONE, 'Use tmp directory')
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$paths = $input->getArgument('path');
-		$outDir = $input->getOption('out');
+		$outDir = $input->getOption('tmp') ? TMP_DIR : OUT_DIR;
 		foreach ($paths as $path) {
 			$output->writeln("Fetching $path...");
 			if (!(filter_var($path, \FILTER_VALIDATE_URL) ? $this->fetchUrl($path, $outDir, $output) : $this->fetchFile($path, $outDir, $output))) {

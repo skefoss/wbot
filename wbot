@@ -1,9 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-use Wbot\Application\WbotApplication;
+use Symfony\Component\Console\Application;
 
 require_once __DIR__ . '/vendor/autoload.php';
+
+const SYS_DIR = __DIR__;
+
+define('SRC_DIR', SYS_DIR . DIRECTORY_SEPARATOR . 'src');
+define('APP_DIR', SRC_DIR . DIRECTORY_SEPARATOR . 'app');
+define('CMD_DIR', SRC_DIR . DIRECTORY_SEPARATOR . 'cmd');
+
+define('RES_DIR', SYS_DIR . DIRECTORY_SEPARATOR . 'res');
+define('OUT_DIR', RES_DIR . DIRECTORY_SEPARATOR . 'out');
+define('TMP_DIR', RES_DIR . DIRECTORY_SEPARATOR . 'tmp');
 
 if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
 	fprintf(STDERR, 'Cannot run %s from %s', __FILE__, PHP_SAPI);
@@ -15,9 +25,9 @@ if (__FILE__ !== ($file = realpath($argv[0])) && basename(__FILE__) !== basename
 	exit(1);
 }
 
-$app = new WbotApplication();
+$app = new Application('WWW-Robot', '1.0.0');
 
-$app->add(new Wbot\Command\WbotFetchCommand);
-$app->add(new Wbot\Command\WbotServeCommand);
+$app->add(new Ske\Bot\Command\FetchCommand);
+$app->add(new Ske\Bot\Command\ServeCommand);
 
 $app->run();

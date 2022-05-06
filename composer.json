@@ -31,12 +31,12 @@
     },
   	"autoload": {
 	  	"psr-4": {
-		  	"Wbot\\Application\\": "src/app/",
-		  	"Wbot\\Command\\": "src/cmd/"
+		  	"Ske\\Bot\\Application\\": "src/app/",
+		  	"Ske\\Bot\\Command\\": "src/cmd/"
 		}
 	},
     "config": {
-        "web-dir": "out",
+        "web-dir": "res",
         "vendor-dir": "vendor",
         "preferred-install": "dist",
         "sort-packages": true
